@@ -5,7 +5,6 @@ import * as z from "zod";
 import Heading from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Billboard } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,14 +25,15 @@ import { AlertModal } from "@/components/Modals/alert-modal";
 import { ApiAlert } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/image-upload";
+import { Category } from "@prisma/client";
 
 interface BillboardFormProps {
-  initialData: Billboard | null;
+  initialData: Category | null;
 }
 
 const formSchema = z.object({
-  label: z.string().min(3).max(100),
-  imageUrl: z.string().min(1),
+  name: z.string().min(3).max(100),
+  billboardLabel: z.string().min(1),
 });
 
 type BillboardFormValues = z.infer<typeof formSchema>;
@@ -47,16 +47,16 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const title = initialData ? "Edit Billboard" : "Add New Billboard";
-  const description = initialData ? "Edit a Billboard" : "Add a New Billboard";
-  const toastmessage = initialData ? "Billboard Updated" : "Billboard Created";
-  const action = initialData ? "Save Changes" : "Create Billboard";
+  const title = initialData ? "Edit Category" : "Add New Category";
+  const description = initialData ? "Edit a Category" : "Add a New Category";
+  const toastmessage = initialData ? "Category Updated" : "Category Created";
+  const action = initialData ? "Save Changes" : "Create Category";
 
   const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      label: "",
-      imageUrl: "",
+      name: "",
+      billboardLabel: "",
     },
   });
 
@@ -133,7 +133,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
         >
           <FormField
             control={form.control}
-            name="imageUrl"
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Background Image</FormLabel>
@@ -152,7 +152,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="label"
+              name="billboardLabel"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Billboard Label</FormLabel>

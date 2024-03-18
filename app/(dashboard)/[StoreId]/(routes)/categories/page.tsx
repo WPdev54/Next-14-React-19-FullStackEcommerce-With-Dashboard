@@ -1,8 +1,8 @@
 import Heading from "@/components/heading";
 import React from "react";
-import { BillboardClient } from "./components/client";
+import { CategoryClient } from "./components/client";
 import primsadb from "@/lib/prismadb";
-import { BillBoardColumn } from "./components/columns";
+import { CategoryColumn } from "./components/columns";
 import {format} from 'date-fns'
 
 const page = async ({
@@ -11,9 +11,12 @@ const page = async ({
   params: { StoreId: string }
 }) => {
 
-  const billboards = await primsadb.billboard.findMany({
+  const categories = await primsadb.category.findMany({
     where: {
       storeId: params.StoreId
+    },
+    include: {
+      billboard: true
     },
     orderBy: {
       createdAt: "desc"
@@ -21,10 +24,10 @@ const page = async ({
   });
 
 
-  const formattedBillboards: BillBoardColumn[] = billboards.map(item => ({
+  const formattedCategories: CategoryColumn[] = categories.map(item => ({
     id: item.id,
-    label: item.label,
-    image: item.imageUrl,
+    name: item.name,
+    billboardLabel: item.billboard.label,
     createdAt: format(item.createdAt, 'MMMM do, yyyy') as unknown as "string"
   }));
 
@@ -33,7 +36,7 @@ const page = async ({
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BillboardClient data={formattedBillboards} />
+        <CategoryClient data={formattedCategories} />
       </div>
     </div>
   );

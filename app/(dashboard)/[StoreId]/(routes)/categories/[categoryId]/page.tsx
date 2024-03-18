@@ -5,20 +5,20 @@ const page = async ({
   params
 }: {
   params: {
-    billboardId: string
+    categoryId: string
   }
 }) => {
 
-  const billboard = await primsadb.billboard.findUnique({
+  const category = await primsadb.category.findUnique({
     where: {
-      id: params.billboardId
+      id: params.categoryId
     }
   })
 
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BillboardForm initialData={billboard} />
+        <BillboardForm initialData={category} />
       </div>
     </div>
   )

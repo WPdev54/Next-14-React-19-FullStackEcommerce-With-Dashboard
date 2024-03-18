@@ -1,7 +1,7 @@
 "use client";
 
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
-import { BillBoardColumn } from "./columns";
+import { CategoryColumn } from "./columns";
 import { Button } from "@/components/ui/button";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -17,7 +17,7 @@ import axios from "axios";
 import { AlertModal } from "@/components/Modals/alert-modal";
 
 interface CellActionProps {
-  data: BillBoardColumn;
+  data: CategoryColumn;
   whatisit: string;
 }
 
